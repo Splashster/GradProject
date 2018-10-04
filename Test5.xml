@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
   <fileHeader companyName="D" productName="OpenPLC" productVersion="1.0" creationDateTime="2018-09-26T00:48:44"/>
-  <contentHeader name="Test" modificationDateTime="2018-09-28T23:25:07">
+  <contentHeader name="Test" modificationDateTime="2018-09-29T00:40:33">
     <coordinateInfo>
       <fbd>
         <scaling x="10" y="10"/>
@@ -57,40 +57,24 @@
                 <derived name="TON"/>
               </type>
             </variable>
-            <variable name="TON2">
+            <variable name="TOF0">
               <type>
-                <derived name="TON"/>
+                <derived name="TOF"/>
               </type>
             </variable>
           </localVars>
         </interface>
         <body>
           <LD>
-            <contact localId="15" height="15" width="21" negated="true">
-              <position x="71" y="185"/>
-              <connectionPointIn>
-                <relPosition x="0" y="8"/>
-                <connection refLocalId="43">
-                  <position x="71" y="193"/>
-                  <position x="46" y="193"/>
-                  <position x="46" y="195"/>
-                  <position x="22" y="195"/>
-                </connection>
-              </connectionPointIn>
-              <connectionPointOut>
-                <relPosition x="21" y="8"/>
-              </connectionPointOut>
-              <variable>TMP</variable>
-            </contact>
             <coil localId="16" height="15" width="21" negated="false">
-              <position x="609" y="184"/>
+              <position x="604" y="185"/>
               <connectionPointIn>
                 <relPosition x="0" y="8"/>
-                <connection refLocalId="15">
-                  <position x="609" y="192"/>
-                  <position x="350" y="192"/>
+                <connection refLocalId="49">
+                  <position x="604" y="193"/>
                   <position x="350" y="193"/>
-                  <position x="92" y="193"/>
+                  <position x="350" y="197"/>
+                  <position x="97" y="197"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
@@ -105,8 +89,8 @@
                 <connection refLocalId="43">
                   <position x="157" y="288"/>
                   <position x="89" y="288"/>
-                  <position x="89" y="307"/>
-                  <position x="22" y="307"/>
+                  <position x="89" y="290"/>
+                  <position x="22" y="290"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
@@ -152,21 +136,19 @@
                 </variable>
               </outputVariables>
             </block>
-            <coil localId="24" height="15" width="21" negated="false">
-              <position x="563" y="279"/>
+            <coil localId="24" height="15" width="21" negated="false" storage="reset">
+              <position x="481" y="280"/>
               <connectionPointIn>
                 <relPosition x="0" y="8"/>
                 <connection refLocalId="23" formalParameter="Q">
-                  <position x="563" y="287"/>
-                  <position x="473" y="287"/>
-                  <position x="473" y="288"/>
+                  <position x="481" y="288"/>
                   <position x="384" y="288"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
                 <relPosition x="21" y="8"/>
               </connectionPointOut>
-              <variable>ESP1</variable>
+              <variable>ESP0</variable>
             </coil>
             <inVariable localId="2" height="31" width="96" negated="false" executionOrderId="0">
               <position x="192" y="298"/>
@@ -175,40 +157,58 @@
               </connectionPointOut>
               <expression>T#10000ms</expression>
             </inVariable>
-            <contact localId="26" height="15" width="21" negated="false">
-              <position x="159" y="411"/>
+            <rightPowerRail localId="42" height="141" width="3">
+              <position x="670" y="172"/>
               <connectionPointIn>
-                <relPosition x="0" y="8"/>
-                <connection refLocalId="43">
-                  <position x="159" y="419"/>
-                  <position x="22" y="419"/>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="16">
+                  <position x="670" y="192"/>
+                  <position x="647" y="192"/>
+                  <position x="647" y="193"/>
+                  <position x="625" y="193"/>
                 </connection>
               </connectionPointIn>
-              <connectionPointOut>
-                <relPosition x="21" y="8"/>
+              <connectionPointIn>
+                <relPosition x="0" y="121"/>
+                <connection refLocalId="48" formalParameter="Q">
+                  <position x="670" y="293"/>
+                  <position x="644" y="293"/>
+                  <position x="644" y="287"/>
+                  <position x="618" y="287"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <leftPowerRail localId="43" height="135" width="3">
+              <position x="19" y="175"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20"/>
               </connectionPointOut>
-              <variable>ESP1</variable>
-            </contact>
-            <block localId="28" typeName="TON" instanceName="TON2" height="60" width="52">
-              <position x="270" y="389"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="115"/>
+              </connectionPointOut>
+            </leftPowerRail>
+            <block localId="48" typeName="TOF" instanceName="TOF0" height="60" width="52">
+              <position x="566" y="257"/>
               <inputVariables>
                 <variable formalParameter="IN">
                   <connectionPointIn>
                     <relPosition x="0" y="30"/>
-                    <connection refLocalId="26">
-                      <position x="270" y="419"/>
-                      <position x="180" y="419"/>
+                    <connection refLocalId="24">
+                      <position x="566" y="287"/>
+                      <position x="534" y="287"/>
+                      <position x="534" y="288"/>
+                      <position x="502" y="288"/>
                     </connection>
                   </connectionPointIn>
                 </variable>
                 <variable formalParameter="PT">
                   <connectionPointIn>
                     <relPosition x="0" y="50"/>
-                    <connection refLocalId="3">
-                      <position x="270" y="439"/>
-                      <position x="246" y="439"/>
-                      <position x="246" y="460"/>
-                      <position x="223" y="460"/>
+                    <connection refLocalId="1">
+                      <position x="566" y="307"/>
+                      <position x="545" y="307"/>
+                      <position x="545" y="333"/>
+                      <position x="525" y="333"/>
                     </connection>
                   </connectionPointIn>
                 </variable>
@@ -227,67 +227,29 @@
                 </variable>
               </outputVariables>
             </block>
-            <inVariable localId="3" height="31" width="96" negated="false" executionOrderId="0">
-              <position x="127" y="445"/>
+            <inVariable localId="1" height="31" width="96" negated="false" executionOrderId="0">
+              <position x="429" y="318"/>
               <connectionPointOut>
                 <relPosition x="96" y="15"/>
               </connectionPointOut>
-              <expression>T#10000ms</expression>
+              <expression>T#5000ms</expression>
             </inVariable>
-            <coil localId="29" height="15" width="21" negated="false" storage="reset">
-              <position x="441" y="411"/>
+            <coil localId="49" height="15" width="21" negated="false">
+              <position x="76" y="189"/>
               <connectionPointIn>
                 <relPosition x="0" y="8"/>
-                <connection refLocalId="28" formalParameter="Q">
-                  <position x="441" y="419"/>
-                  <position x="322" y="419"/>
+                <connection refLocalId="43">
+                  <position x="76" y="197"/>
+                  <position x="49" y="197"/>
+                  <position x="49" y="195"/>
+                  <position x="22" y="195"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
                 <relPosition x="21" y="8"/>
               </connectionPointOut>
-              <variable>ESP1</variable>
+              <variable>TMP</variable>
             </coil>
-            <rightPowerRail localId="42" height="268" width="3">
-              <position x="670" y="172"/>
-              <connectionPointIn>
-                <relPosition x="0" y="20"/>
-                <connection refLocalId="16">
-                  <position x="670" y="192"/>
-                  <position x="630" y="192"/>
-                </connection>
-              </connectionPointIn>
-              <connectionPointIn>
-                <relPosition x="0" y="134"/>
-                <connection refLocalId="24">
-                  <position x="670" y="306"/>
-                  <position x="627" y="306"/>
-                  <position x="627" y="287"/>
-                  <position x="584" y="287"/>
-                </connection>
-              </connectionPointIn>
-              <connectionPointIn>
-                <relPosition x="0" y="248"/>
-                <connection refLocalId="29">
-                  <position x="670" y="420"/>
-                  <position x="566" y="420"/>
-                  <position x="566" y="419"/>
-                  <position x="462" y="419"/>
-                </connection>
-              </connectionPointIn>
-            </rightPowerRail>
-            <leftPowerRail localId="43" height="264" width="3">
-              <position x="19" y="175"/>
-              <connectionPointOut formalParameter="">
-                <relPosition x="3" y="20"/>
-              </connectionPointOut>
-              <connectionPointOut formalParameter="">
-                <relPosition x="3" y="132"/>
-              </connectionPointOut>
-              <connectionPointOut formalParameter="">
-                <relPosition x="3" y="244"/>
-              </connectionPointOut>
-            </leftPowerRail>
           </LD>
         </body>
       </pou>

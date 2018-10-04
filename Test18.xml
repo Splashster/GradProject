@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="D" productName="OpenPLC" productVersion="1.0" creationDateTime="2018-09-26T00:48:44"/>
+  <contentHeader name="Test" modificationDateTime="2018-10-04T03:33:27">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="Test_Program" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="ESP0" address="%QX0.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="TMP">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="TMP0" address="%QX0.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="ESP1" address="%QX0.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <LD>
+            <rightPowerRail localId="42" height="269" width="3">
+              <position x="670" y="172"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="50">
+                  <position x="670" y="192"/>
+                  <position x="641" y="192"/>
+                  <position x="641" y="199"/>
+                  <position x="612" y="199"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <leftPowerRail localId="43" height="256" width="3">
+              <position x="19" y="175"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20"/>
+              </connectionPointOut>
+            </leftPowerRail>
+            <coil localId="50" height="15" width="21" negated="false">
+              <position x="591" y="191"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="52">
+                  <position x="591" y="199"/>
+                  <position x="346" y="199"/>
+                  <position x="346" y="197"/>
+                  <position x="254" y="197"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>ESP0</variable>
+            </coil>
+            <contact localId="52" height="15" width="21" negated="true">
+              <position x="233" y="189"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="53">
+                  <position x="233" y="197"/>
+                  <position x="179" y="197"/>
+                  <position x="179" y="198"/>
+                  <position x="125" y="198"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>TMP</variable>
+            </contact>
+            <contact localId="53" height="15" width="21" negated="false">
+              <position x="104" y="190"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="43">
+                  <position x="104" y="198"/>
+                  <position x="63" y="198"/>
+                  <position x="63" y="195"/>
+                  <position x="22" y="195"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>TMP0</variable>
+            </contact>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="MyTask" priority="0" interval="T#50ms">
+            <pouInstance name="instance0" typeName="Test_Program"/>
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
