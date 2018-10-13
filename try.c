@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
 
-	PyObject *pName, *pModule, *pDict, *pFunc, *pValue, *sysPath;
+	PyObject *pName, *pModule, *pFunc, *pValue;
 
 	//Initialize the Python Interpreter
 	Py_Initialize();
