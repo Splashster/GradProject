@@ -1,0 +1,2 @@
+alert tcp !$MODBUS_CLIENT  any -> $MODBUS_SERVER 502 (flow:from_client,established; content:"|00 00|"; offset:2; depth:2; pcre:"/[\S\s]{3}(\x05|\x06|\x0F|\x10|\x15|\x16)/iAR"; msg:"Modbus TCP – Unauthorized Write Request to a PLC"; reference:scada,1111007; classtype:bad-unknown; sid:1111007; rev:1; priority:1;)
+alert tcp any any <> $MODBUS_SERVER 502 (flow:established; pcre:"/[\S\s]{2}(?!\x00\x00)/iAR"; msg:"Modbus TCP – Non-Modbus Communication on TCP Port 502"; reference:scada,1111009; classtype:non-standard-protocol; sid:1111009; rev:1; priority:1;)
