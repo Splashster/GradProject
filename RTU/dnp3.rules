@@ -1,0 +1,2 @@
+alert tcp DNP3_OUTSTATION any -> any any (msg:"Suspcious Data Detected";dnp3_data;pcre:"/[0-9]{1,}/";sid:1;)
+

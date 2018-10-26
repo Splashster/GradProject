@@ -19,7 +19,7 @@
 // prototypes for handling ini file reading
 int cfg_handler(void* user, const char* section, const char* name, const char* value);
 bool safe_handler(Config& config, const std::string& section, const std::string& name, const std::string& value);
-int splitString(char* string, char delim, char** storage);
+int splitString(char* string, const char* delim, char** storage);
 
 using namespace opendnp3;
 using namespace asiopal;
@@ -85,41 +85,40 @@ int main(int argc, char *argv[])
 	PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
 
 	Py_Initialize();
-	pName = PyString_FromString("read_serial");
-
-	pModule = PyImport_Import(pName);
-	Py_DECREF(pName);
-
-	if(pModule != NULL){
-		pFunc = PyObject_GetAttrString(pModule, "readSerial");
-
-		if (pFunc && PyCallable_Check(pFunc)){
-			pArgs = PyTuple_New(2);
-			pValue = Pystring_FromString("/dev/ttyACM0");
-			PyTuple_SetItem(pArgs, 0, pValue);
-			pValue = Pystring_FromString("2000000");
-			PyTuple_SetItem(pArgs, 1, pValue);
-		}
-	}
-
+	int test = 0;
 	while(true) {
+		pName = PyString_FromString("read_serial");
+
+		pModule = PyImport_Import(pName);
+		Py_DECREF(pName);
+
+		if(pModule != NULL){
+			pFunc = PyObject_GetAttrString(pModule, "readSerial");
+
+			if (pFunc && PyCallable_Check(pFunc)){
+				pArgs = PyTuple_New(2);
+				pValue = PyString_FromString("/dev/ttyACM0");
+				PyTuple_SetItem(pArgs, 0, pValue);
+				pValue = PyString_FromString("2000000");
+				PyTuple_SetItem(pArgs, 1, pValue);
+			}
+		}
 
 		DNPTime time(asiopal::UTCTimeSource::Instance().Now().msSinceEpoch);
 
 		UpdateBuilder builder;
 
 		uint16_t index = 0;
-		int num_elemnts = 0;
-		char** serial_info = (char*)malloc(sizeof(char*) * 1024);
-		char** sensor_info = (char*)malloc(sizeof(char*) * 1024);
- 		
+		int num_elements = 0;
+		char** sensor_info = (char**)malloc(sizeof(char*) * 1024);
+ 		char* serial_info;	
 		
 		pValue = PyObject_CallObject(pFunc, pArgs);
+		printf("FINISHED!\n");
 
 		if(pValue != NULL){
-			serial_info = PyString_FromString(pValue);
-			num_elements = splitStrings(serial_info, ",", sensor_info);				
-			free(serial_info);
+			serial_info = PyString_AsString(pValue);
+			num_elements = splitString(serial_info, ",", sensor_info);				
 		}else{
 			printf("Failed");
 		}
@@ -139,18 +138,21 @@ int main(int argc, char *argv[])
 		}*/
 
 		for (index = 0; index < num_elements; index++){			
+			//printf("I got: %f FROM: %d ROUND:%d\n", atof(sensor_info[index]),index,test);
 			builder.Update(Analog(atof(sensor_info[index]), 0x01, time), index);
 		}
 
 		outstation->Apply(builder.Build());
-		free(serial_info);
+		free(sensor_info);
 		
 		// determines the sampling rate
 		std::this_thread::sleep_for(SAMPLE_PERIOD);
+
+		Py_DECREF(pArgs);
+		Py_XDECREF(pFunc);	
+		Py_XDECREF(pModule);	
+		test++;
 	}
-	Py_DECREF(pArgs);
-	Py_XDECREF(pFunc);	
-	Py_XDECREF(pModule);	
 }
 
 bool safe_handler(Config& config, const std::string& section, const std::string& name, const std::string& value)
@@ -207,16 +209,17 @@ int cfg_handler(void* user, const char* section, const char* name, const char* v
 	return safe_handler(*(Config*)user, section, name, value) ? 1 : 0;
 }
 
-int splitString(char* string, char delim, char** storage){
-	char* savePtr, tok;
+int splitString(char* string, const char* delim, char** storage){
+	char* savePtr;
+	char* tok;
 	int i = 0;
-	tok = strtok_r(string, delim, savePtr);
+	tok = strtok_r(string, delim, &savePtr);
 
 	while(tok != NULL){
-		stroage[i] = tok;
-		tok = strtok_r(string, delim, savePtr);
-		i++;
-
+		storage[i++] = tok;
+		tok = strtok_r(NULL, delim, &savePtr);
+	}
 	return i;
 
+	
 }
