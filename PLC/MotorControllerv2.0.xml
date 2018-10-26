@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="D" productName="OpenPLC" productVersion="1.0" creationDateTime="2018-09-26T00:48:44"/>
+  <contentHeader name="Montor Controller v1.0" modificationDateTime="2018-10-25T20:13:20">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="Mixer_Control_Program" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="Motor_State" address="%QX0.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="TMP">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="Activation_Switch" address="%QX1.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="Motor_Direction" address="%QX0.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="TON1">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+            <variable name="TON2">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <LD>
+            <contact localId="21" height="15" width="21" negated="false">
+              <position x="157" y="280"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="43">
+                  <position x="157" y="288"/>
+                  <position x="89" y="288"/>
+                  <position x="89" y="303"/>
+                  <position x="22" y="303"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Motor_State</variable>
+            </contact>
+            <block localId="23" typeName="TON" instanceName="TON1" height="60" width="52">
+              <position x="332" y="258"/>
+              <inputVariables>
+                <variable formalParameter="IN">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="21">
+                      <position x="332" y="288"/>
+                      <position x="178" y="288"/>
+                    </connection>
+                    <connection refLocalId="21">
+                      <position x="332" y="288"/>
+                      <position x="178" y="288"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="PT">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="2">
+                      <position x="332" y="308"/>
+                      <position x="310" y="308"/>
+                      <position x="310" y="313"/>
+                      <position x="288" y="313"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="52" y="30"/>
+                  </connectionPointOut>
+                </variable>
+                <variable formalParameter="ET">
+                  <connectionPointOut>
+                    <relPosition x="52" y="50"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <coil localId="24" height="15" width="21" negated="false">
+              <position x="563" y="279"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="23" formalParameter="Q">
+                  <position x="563" y="287"/>
+                  <position x="473" y="287"/>
+                  <position x="473" y="288"/>
+                  <position x="384" y="288"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Motor_Direction</variable>
+            </coil>
+            <inVariable localId="2" height="31" width="96" negated="false" executionOrderId="0">
+              <position x="192" y="298"/>
+              <connectionPointOut>
+                <relPosition x="96" y="15"/>
+              </connectionPointOut>
+              <expression>T#3000ms</expression>
+            </inVariable>
+            <contact localId="26" height="15" width="21" negated="false">
+              <position x="159" y="411"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="43">
+                  <position x="159" y="419"/>
+                  <position x="90" y="419"/>
+                  <position x="90" y="411"/>
+                  <position x="22" y="411"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Motor_Direction</variable>
+            </contact>
+            <block localId="28" typeName="TON" instanceName="TON2" height="60" width="52">
+              <position x="270" y="389"/>
+              <inputVariables>
+                <variable formalParameter="IN">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="26">
+                      <position x="270" y="419"/>
+                      <position x="180" y="419"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="PT">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="3">
+                      <position x="270" y="439"/>
+                      <position x="246" y="439"/>
+                      <position x="246" y="460"/>
+                      <position x="223" y="460"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="52" y="30"/>
+                  </connectionPointOut>
+                </variable>
+                <variable formalParameter="ET">
+                  <connectionPointOut>
+                    <relPosition x="52" y="50"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <inVariable localId="3" height="31" width="96" negated="false" executionOrderId="0">
+              <position x="127" y="445"/>
+              <connectionPointOut>
+                <relPosition x="96" y="15"/>
+              </connectionPointOut>
+              <expression>T#5000ms</expression>
+            </inVariable>
+            <rightPowerRail localId="42" height="269" width="3">
+              <position x="670" y="172"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="50">
+                  <position x="670" y="192"/>
+                  <position x="641" y="192"/>
+                  <position x="641" y="199"/>
+                  <position x="612" y="199"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="135"/>
+                <connection refLocalId="24">
+                  <position x="670" y="307"/>
+                  <position x="627" y="307"/>
+                  <position x="627" y="287"/>
+                  <position x="584" y="287"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="249"/>
+                <connection refLocalId="51">
+                  <position x="670" y="421"/>
+                  <position x="614" y="421"/>
+                  <position x="614" y="417"/>
+                  <position x="559" y="417"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <leftPowerRail localId="43" height="256" width="3">
+              <position x="19" y="175"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20"/>
+              </connectionPointOut>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="128"/>
+              </connectionPointOut>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="236"/>
+              </connectionPointOut>
+            </leftPowerRail>
+            <coil localId="50" height="15" width="21" negated="false">
+              <position x="591" y="191"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="52">
+                  <position x="591" y="199"/>
+                  <position x="346" y="199"/>
+                  <position x="346" y="197"/>
+                  <position x="254" y="197"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Motor_State</variable>
+            </coil>
+            <coil localId="51" height="15" width="21" negated="false">
+              <position x="538" y="409"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="28" formalParameter="Q">
+                  <position x="538" y="417"/>
+                  <position x="430" y="417"/>
+                  <position x="430" y="419"/>
+                  <position x="322" y="419"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>TMP</variable>
+            </coil>
+            <contact localId="52" height="15" width="21" negated="true">
+              <position x="233" y="189"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="53">
+                  <position x="233" y="197"/>
+                  <position x="179" y="197"/>
+                  <position x="179" y="198"/>
+                  <position x="125" y="198"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>TMP</variable>
+            </contact>
+            <contact localId="53" height="15" width="21" negated="false">
+              <position x="104" y="190"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="43">
+                  <position x="104" y="198"/>
+                  <position x="63" y="198"/>
+                  <position x="63" y="195"/>
+                  <position x="22" y="195"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Activation_Switch</variable>
+            </contact>
+          </LD>
+        </body>
+      </pou>
+      <pou name="Fan_Control_Program" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="Fan" address="%QX0.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="Temperature" address="%QW1">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <LD>
+            <block localId="2" typeName="GT" height="60" width="70">
+              <position x="232" y="73"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="4">
+                      <position x="232" y="103"/>
+                      <position x="183" y="103"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="3">
+                      <position x="232" y="123"/>
+                      <position x="203" y="123"/>
+                      <position x="203" y="157"/>
+                      <position x="188" y="157"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="70" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <inVariable localId="3" height="31" width="38" negated="false">
+              <position x="150" y="142"/>
+              <connectionPointOut>
+                <relPosition x="38" y="15"/>
+              </connectionPointOut>
+              <expression>74</expression>
+            </inVariable>
+            <inVariable localId="4" height="31" width="98" negated="false">
+              <position x="85" y="88"/>
+              <connectionPointOut>
+                <relPosition x="98" y="15"/>
+              </connectionPointOut>
+              <expression>Temperature</expression>
+            </inVariable>
+            <coil localId="5" height="15" width="21" negated="false">
+              <position x="474" y="95"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="2" formalParameter="OUT">
+                  <position x="474" y="103"/>
+                  <position x="302" y="103"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Fan</variable>
+            </coil>
+            <rightPowerRail localId="7" height="159" width="3">
+              <position x="568" y="83"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="5">
+                  <position x="568" y="103"/>
+                  <position x="495" y="103"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="139"/>
+                <connection refLocalId="8">
+                  <position x="568" y="222"/>
+                  <position x="372" y="222"/>
+                  <position x="372" y="229"/>
+                  <position x="176" y="229"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <contact localId="8" height="15" width="21" negated="false">
+              <position x="155" y="221"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="10">
+                  <position x="155" y="229"/>
+                  <position x="105" y="229"/>
+                  <position x="105" y="227"/>
+                  <position x="56" y="227"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Fan</variable>
+            </contact>
+            <leftPowerRail localId="10" height="40" width="3">
+              <position x="53" y="207"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20"/>
+              </connectionPointOut>
+            </leftPowerRail>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="ControlMotors" priority="0" interval="T#50ms">
+            <pouInstance name="instance0" typeName="Mixer_Control_Program"/>
+            <pouInstance name="instance1" typeName="Fan_Control_Program"/>
+          </task>
+          <task name="ControlFan" priority="0" interval="T#50ms"/>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
