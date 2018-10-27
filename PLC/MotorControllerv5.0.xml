@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
   <fileHeader companyName="D" productName="OpenPLC" productVersion="1.0" creationDateTime="2018-09-26T00:48:44"/>
-  <contentHeader name="Montor Controller v1.0" modificationDateTime="2018-10-27T06:41:47">
+  <contentHeader name="Montor Controller v1.0" modificationDateTime="2018-10-27T08:07:31">
     <coordinateInfo>
       <fbd>
         <scaling x="10" y="10"/>
@@ -314,12 +314,25 @@
       <pou name="Fan_Control_Program" pouType="program">
         <interface>
           <localVars>
-            <variable name="Fan" address="%QX0.2">
+            <variable name="Fan1" address="%QX0.2">
               <type>
                 <BOOL/>
               </type>
             </variable>
-            <variable name="Max_Temperature" address="%QW2">
+            <variable name="Fan2" address="%QX0.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="Critical_Temperature" address="%QW4">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="200"/>
+              </initialValue>
+            </variable>
+            <variable name="Overheat_Temperature" address="%QW2">
               <type>
                 <INT/>
               </type>
@@ -335,18 +348,136 @@
                 <simpleValue value="0"/>
               </initialValue>
             </variable>
+            <variable name="Cooldown_Temperature" address="%QW3">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="70"/>
+              </initialValue>
+            </variable>
           </localVars>
         </interface>
         <body>
           <LD>
-            <block localId="2" typeName="GT" height="60" width="70">
-              <position x="232" y="73"/>
+            <inVariable localId="3" height="31" width="168" negated="false">
+              <position x="48" y="140"/>
+              <connectionPointOut>
+                <relPosition x="168" y="15"/>
+              </connectionPointOut>
+              <expression>Overheat_Temperature</expression>
+            </inVariable>
+            <inVariable localId="4" height="31" width="98" negated="false">
+              <position x="85" y="88"/>
+              <connectionPointOut>
+                <relPosition x="98" y="15"/>
+              </connectionPointOut>
+              <expression>Temperature</expression>
+            </inVariable>
+            <contact localId="8" height="15" width="21" negated="false">
+              <position x="464" y="346"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="10">
+                  <position x="464" y="354"/>
+                  <position x="239" y="354"/>
+                  <position x="239" y="349"/>
+                  <position x="14" y="349"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Fan1</variable>
+            </contact>
+            <leftPowerRail localId="10" height="322" width="3">
+              <position x="11" y="329"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20"/>
+              </connectionPointOut>
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="302"/>
+              </connectionPointOut>
+            </leftPowerRail>
+            <rightPowerRail localId="11" height="431" width="3">
+              <position x="582" y="194"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="9">
+                  <position x="582" y="214"/>
+                  <position x="532" y="214"/>
+                  <position x="532" y="226"/>
+                  <position x="483" y="226"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="150"/>
+                <connection refLocalId="8">
+                  <position x="582" y="344"/>
+                  <position x="533" y="344"/>
+                  <position x="533" y="354"/>
+                  <position x="485" y="354"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="281"/>
+                <connection refLocalId="14">
+                  <position x="582" y="475"/>
+                  <position x="551" y="475"/>
+                  <position x="551" y="446"/>
+                  <position x="521" y="446"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="0" y="411"/>
+                <connection refLocalId="18">
+                  <position x="582" y="605"/>
+                  <position x="537" y="605"/>
+                  <position x="537" y="607"/>
+                  <position x="495" y="607"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <inVariable localId="6" height="31" width="176" negated="false" executionOrderId="0">
+              <position x="30" y="267"/>
+              <connectionPointOut>
+                <relPosition x="176" y="15"/>
+              </connectionPointOut>
+              <expression>Cooldown_Temperature</expression>
+            </inVariable>
+            <inVariable localId="7" height="31" width="134" negated="false" executionOrderId="0">
+              <position x="56" y="206"/>
+              <connectionPointOut>
+                <relPosition x="134" y="15"/>
+              </connectionPointOut>
+              <expression>Temperature</expression>
+            </inVariable>
+            <coil localId="9" height="15" width="21" negated="false" executionOrderId="0">
+              <position x="462" y="218"/>
+              <connectionPointIn>
+                <relPosition x="0" y="8"/>
+                <connection refLocalId="19" formalParameter="OUT">
+                  <position x="462" y="226"/>
+                  <position x="447" y="226"/>
+                  <position x="447" y="225"/>
+                  <position x="432" y="225"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="8"/>
+              </connectionPointOut>
+              <variable>Fan1</variable>
+            </coil>
+            <block localId="13" typeName="GE" height="60" width="70">
+              <position x="235" y="77"/>
               <inputVariables>
                 <variable formalParameter="IN1">
                   <connectionPointIn>
                     <relPosition x="0" y="30"/>
                     <connection refLocalId="4">
-                      <position x="232" y="103"/>
+                      <position x="235" y="107"/>
+                      <position x="209" y="107"/>
+                      <position x="209" y="103"/>
                       <position x="183" y="103"/>
                     </connection>
                   </connectionPointIn>
@@ -355,10 +486,12 @@
                   <connectionPointIn>
                     <relPosition x="0" y="50"/>
                     <connection refLocalId="3">
-                      <position x="232" y="123"/>
-                      <position x="191" y="123"/>
-                      <position x="191" y="161"/>
-                      <position x="178" y="161"/>
+                      <position x="235" y="127"/>
+                      <position x="209" y="127"/>
+                      <position x="209" y="141"/>
+                      <position x="226" y="141"/>
+                      <position x="226" y="155"/>
+                      <position x="216" y="155"/>
                     </connection>
                   </connectionPointIn>
                 </variable>
@@ -372,75 +505,157 @@
                 </variable>
               </outputVariables>
             </block>
-            <inVariable localId="3" height="31" width="136" negated="false">
-              <position x="42" y="146"/>
+            <block localId="15" typeName="GT" height="60" width="70">
+              <position x="241" y="196"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="7">
+                      <position x="241" y="226"/>
+                      <position x="215" y="226"/>
+                      <position x="215" y="221"/>
+                      <position x="190" y="221"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="6">
+                      <position x="241" y="246"/>
+                      <position x="216" y="246"/>
+                      <position x="216" y="282"/>
+                      <position x="206" y="282"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="70" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <inVariable localId="1" height="31" width="168" negated="false" executionOrderId="0">
+              <position x="36" y="479"/>
               <connectionPointOut>
-                <relPosition x="136" y="15"/>
+                <relPosition x="168" y="15"/>
               </connectionPointOut>
-              <expression>Max_Temperature</expression>
+              <expression>Critical_Temperature</expression>
             </inVariable>
-            <inVariable localId="4" height="31" width="98" negated="false">
-              <position x="85" y="88"/>
+            <inVariable localId="2" height="31" width="98" negated="false" executionOrderId="0">
+              <position x="100" y="427"/>
               <connectionPointOut>
                 <relPosition x="98" y="15"/>
               </connectionPointOut>
               <expression>Temperature</expression>
             </inVariable>
-            <coil localId="5" height="15" width="21" negated="false">
-              <position x="474" y="95"/>
+            <coil localId="14" height="15" width="21" negated="false" executionOrderId="0">
+              <position x="500" y="438"/>
               <connectionPointIn>
                 <relPosition x="0" y="8"/>
-                <connection refLocalId="2" formalParameter="OUT">
-                  <position x="474" y="103"/>
-                  <position x="302" y="103"/>
+                <connection refLocalId="16" formalParameter="OUT">
+                  <position x="500" y="446"/>
+                  <position x="320" y="446"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
                 <relPosition x="21" y="8"/>
               </connectionPointOut>
-              <variable>Fan</variable>
+              <variable>Fan2</variable>
             </coil>
-            <rightPowerRail localId="7" height="159" width="3">
-              <position x="568" y="83"/>
-              <connectionPointIn>
-                <relPosition x="0" y="20"/>
-                <connection refLocalId="5">
-                  <position x="568" y="103"/>
-                  <position x="495" y="103"/>
-                </connection>
-              </connectionPointIn>
-              <connectionPointIn>
-                <relPosition x="0" y="139"/>
-                <connection refLocalId="8">
-                  <position x="568" y="222"/>
-                  <position x="372" y="222"/>
-                  <position x="372" y="229"/>
-                  <position x="176" y="229"/>
-                </connection>
-              </connectionPointIn>
-            </rightPowerRail>
-            <contact localId="8" height="15" width="21" negated="false">
-              <position x="155" y="221"/>
+            <block localId="16" typeName="GE" height="60" width="70" executionOrderId="0">
+              <position x="250" y="416"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="2">
+                      <position x="250" y="446"/>
+                      <position x="224" y="446"/>
+                      <position x="224" y="442"/>
+                      <position x="198" y="442"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="1">
+                      <position x="250" y="466"/>
+                      <position x="224" y="466"/>
+                      <position x="224" y="480"/>
+                      <position x="241" y="480"/>
+                      <position x="241" y="494"/>
+                      <position x="204" y="494"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="70" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <contact localId="18" height="15" width="21" negated="false">
+              <position x="474" y="599"/>
               <connectionPointIn>
                 <relPosition x="0" y="8"/>
                 <connection refLocalId="10">
-                  <position x="155" y="229"/>
-                  <position x="105" y="229"/>
-                  <position x="105" y="227"/>
-                  <position x="56" y="227"/>
+                  <position x="474" y="607"/>
+                  <position x="244" y="607"/>
+                  <position x="244" y="631"/>
+                  <position x="14" y="631"/>
                 </connection>
               </connectionPointIn>
               <connectionPointOut>
                 <relPosition x="21" y="8"/>
               </connectionPointOut>
-              <variable>Fan</variable>
+              <variable>Fan2</variable>
             </contact>
-            <leftPowerRail localId="10" height="40" width="3">
-              <position x="53" y="207"/>
-              <connectionPointOut formalParameter="">
-                <relPosition x="3" y="20"/>
-              </connectionPointOut>
-            </leftPowerRail>
+            <block localId="19" typeName="OR" height="60" width="70">
+              <position x="362" y="195"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="13" formalParameter="OUT">
+                      <position x="362" y="225"/>
+                      <position x="348" y="225"/>
+                      <position x="348" y="107"/>
+                      <position x="305" y="107"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="15" formalParameter="OUT">
+                      <position x="362" y="245"/>
+                      <position x="332" y="245"/>
+                      <position x="332" y="226"/>
+                      <position x="311" y="226"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="70" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
           </LD>
         </body>
       </pou>
