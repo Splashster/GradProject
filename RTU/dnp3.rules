@@ -1,2 +1,15 @@
-alert tcp DNP3_OUTSTATION any -> any any (msg:"Suspcious Data Detected";dnp3_data;pcre:"/[0-9]{1,}/";sid:1;)
+#alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Suspicious Data Detected";dnp3_func:response;dnp3_obj:30,1;dnp3_data;content:"|10 27|";offset:10;depth:4;sid:100000010;)
+
+alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Temperature Data Transmission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,!=,0x00,11;byte_test:1,>,0x78,10;sid:100000100;)
+
+#alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Temperature Data Transmission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,>=,0x78,10;sid:100000101;)
+
+
+alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Humidity Data Transmission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,!=,0x00,16;byte_test:1,>,0x64,15;sid:100000102;)
+
+#alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Humidity Data Transmission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,>=,0x64,15;sid:100000103;)
+
+alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Motion Data Transimission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,!=,0x00,21;byte_test:1,>,0x01,20;sid:100000103;)
+
+#alert tcp DNP3_OUTSTATION 20000 -> any any (msg:"Detected Suspicious Motion Data Transmission From Outstation";dnp3_func:response;dnp3_obj:30,1;dnp3_data;byte_test:1,>=,0x01,20;sid:100000105;)
 

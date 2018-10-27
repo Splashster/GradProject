@@ -1,4 +1,3 @@
 #!/bin/bash
 
-xterm -hold -e "/home/pi/rpi-dnp3-gpio/build/rpi-dnp3-gpio /home/pi/rpi-dnp3-gpio/default.ini" 
-
+/home/pi/GradProject/RTU/rpi-dnp3-gpio_clean /home/pi/GradProject/RTU/default.ini </dev/null &>/dev/null &

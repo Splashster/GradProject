@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <wiringPi.h>
 #include <Python.h>
+#include <cstdlib>
+#include <ctime>
 
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/UpdateBuilder.h>
@@ -85,7 +87,11 @@ int main(int argc, char *argv[])
 	PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
 
 	Py_Initialize();
-	int test = 0;
+	int plague_counter = 0;     //counter for timing when to inject a malicious temperature
+	int rand();		   //used for random number generator
+	srand(time(NULL));	
+	int plague_index = 0;	 
+	
 	while(true) {
 		pName = PyString_FromString("read_serial");
 
@@ -112,7 +118,7 @@ int main(int argc, char *argv[])
 		int num_elements = 0;
 		char** sensor_info = (char**)malloc(sizeof(char*) * 1024);
  		char* serial_info;	
-		
+	
 		pValue = PyObject_CallObject(pFunc, pArgs);
 		//printf("FINISHED!\n");
 
@@ -137,9 +143,25 @@ int main(int argc, char *argv[])
 			++index;
 		}*/
 
+		plague_index = rand() % num_elements;
+
+
 		for (index = 0; index < num_elements; index++){			
 			//printf("I got: %d FROM: %d ROUND:%d\n", atoi(sensor_info[index]),index,test);
-			builder.Update(Analog(atoi(sensor_info[index]), 0x01, time), index);
+			if(plague_counter == 10 && index == plague_index){
+				int inject_val = (rand() % 10000) + 121;
+				//printf("!!!!!!!!!INJECTING %d!!!!!!!!!!!!!! INTO: %d!!!!!!!!",inject_val, plague_index);
+				builder.Update(Analog(inject_val, 0x01, time), index);
+			}else{
+				builder.Update(Analog(atoi(sensor_info[index]), 0x01, time), index);
+			}
+		}
+		
+		//Reset or increment plague counter
+		if(plague_counter == 10){
+			plague_counter = 0;
+		}else{
+			plague_counter++;
 		}
 
 		outstation->Apply(builder.Build());
@@ -151,7 +173,6 @@ int main(int argc, char *argv[])
 		Py_DECREF(pArgs);
 		Py_XDECREF(pFunc);	
 		Py_XDECREF(pModule);	
-		test++;
 	}
 }
 
