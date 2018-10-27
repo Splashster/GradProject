@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 	PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
 
 	Py_Initialize();
-	int test = 0;
+	
 	while(true) {
 		pName = PyString_FromString("read_serial");
 
@@ -114,7 +114,6 @@ int main(int argc, char *argv[])
  		char* serial_info;	
 		
 		pValue = PyObject_CallObject(pFunc, pArgs);
-		//printf("FINISHED!\n");
 
 		if(pValue != NULL){
 			serial_info = PyString_AsString(pValue);
@@ -138,7 +137,6 @@ int main(int argc, char *argv[])
 		}*/
 
 		for (index = 0; index < num_elements; index++){			
-			//printf("I got: %d FROM: %d ROUND:%d\n", atoi(sensor_info[index]),index,test);
 			builder.Update(Analog(atoi(sensor_info[index]), 0x01, time), index);
 		}
 
@@ -151,7 +149,6 @@ int main(int argc, char *argv[])
 		Py_DECREF(pArgs);
 		Py_XDECREF(pFunc);	
 		Py_XDECREF(pModule);	
-		test++;
 	}
 }
 
