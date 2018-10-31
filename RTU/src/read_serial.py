@@ -1,5 +1,12 @@
 #!/usr/bin/ env python
 
+'''
+The puropse of this program is to read and return data from a serial port on 
+the device that's running this program.
+The readSerial function takes a port name and a baudrate as parameters
+'''
+
+
 import time
 import serial
 
@@ -22,10 +29,4 @@ def readSerial(portName, br):
         pass
 
             
-'''
-if __name__ == "__main__":
-    while 1:
-        val = readSerial()
-        print val
-'''
     
